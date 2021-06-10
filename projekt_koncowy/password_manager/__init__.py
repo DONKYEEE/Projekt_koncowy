@@ -1,19 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from password_manager.config import Config
 
 
-db = SQLAlchemy()
+app = Flask(__name__)
+db = SQLAlchemy(app)
 
-login_manager = LoginManager()
+app.config.from_object(Config)
 
-def create_app():
-   app = Flask(__name__)
+login_manager = LoginManager(app)
 
-   db.init_app(app)
-   login_manager.init_app(app)
-
-
-   from password_manager import routes
-
-   return app
+from password_manager import routes
